@@ -1,31 +1,31 @@
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "@firebase/auth";
+import { createUserWithEmailAndPassword } from "@firebase/auth";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import auth from "../lib/firebase";
 
-const Login = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  const handleSignIn = async (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/");
+      await createUserWithEmailAndPassword(auth, email, password);
+      router.push("/"); // Redirect to the home page after successful signup
     } catch (error) {
       setError(error.message);
     }
   };
 
   return (
-    <div className="login-container">
-      <h1>Login</h1>
+    <div className="signup-container">
+      <h1>Sign Up</h1>
       {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSignIn}>
+      <form onSubmit={handleSignUp}>
         <label>
           Email:
           <input
@@ -46,17 +46,16 @@ const Login = () => {
           />
         </label>
         <br />
-        <button type="submit" className="login-button">
-          Log In
+        <button type="submit" className="signup-button">
+          Sign Up
         </button>
       </form>
       <div className="login-link">
-        <p>Don't have an account? <Link href="/signup">Sign Up</Link></p>
+        <p>Already have an account? <Link href="/login">Login</Link></p>
       </div>
 
-
       <style jsx>{`
-        .login-container {
+        .signup-container {
           max-width: 400px;
           margin: 250px auto;
           padding: 20px;
@@ -77,20 +76,20 @@ const Login = () => {
           box-sizing: border-box;
         }
 
-        .login-button {
+        .signup-button {
           width: 100%;
           padding: 10px;
           margin-top: 20px;
           margin-bottom: 20px;
-          background-color: #4caf50;
+          background-color: #2196f3;
           color: #fff;
           border: none;
           border-radius: 5px;
           cursor: pointer;
         }
 
-        .login-button:hover {
-          background-color: #45a049;
+        .signup-button:hover {
+          background-color: #0b7dda;
         }
 
         .login-link {
@@ -115,4 +114,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
